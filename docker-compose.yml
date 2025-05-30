@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - sd-network
+    volumes:
+      - redis_data:/data
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"  # UI de gerenciamento
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - sd-network
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+  api-node:
+    build: ./api-node
+    container_name: api-node
+    ports:
+      - "3000:3000"
+    depends_on:
+      - redis
+      - api-python
+    networks:
+      - sd-network
+    environment:
+      - NODE_ENV=development
+
+  api-python:
+    build: ./api-python
+    container_name: api-python
+    ports:
+      - "5000:5000"
+    depends_on:
+      - redis
+      - rabbitmq
+    networks:
+      - sd-network
+
+  api-php:
+    build: ./api-php
+    container_name: api-php
+    ports:
+      - "8000:8000"
+    depends_on:
+      - rabbitmq
+    networks:
+      - sd-network
+
+volumes:
+  redis_data:
+  rabbitmq_data:
+
+networks:
+  sd-network:
+    driver: bridge

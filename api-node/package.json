@@ -1,0 +1,29 @@
+{
+  "name": "api-node",
+  "version": "1.0.0",
+  "description": "API de sensores para sistema de petróleo",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "sensors",
+    "oil",
+    "api"
+  ],
+  "author": "Seu Nome",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "axios": "^1.9.0",
+    "express": "^5.1.0",
+    "redis": "^5.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
+
+
